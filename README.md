@@ -1,133 +1,316 @@
-# Bun 1.3.1 Boilerplate
+# Aurora Mobile Health Companion
 
-A **true Bun boilerplate** using Bun's native development server, bundler, and the revolutionary `console: true` feature that pipes frontend console logs to your backend terminal.
+A comprehensive React Native + Expo mobile health tracking app with AI-powered features, built with TypeScript, Supabase, and Google Gemini AI.
 
-## 🚀 Features
+## Features
 
-- ⚡️ **Bun 1.3.1** - Lightning-fast JavaScript runtime
-- 🔥 **Native Bun Dev Server** - No Vite, no Webpack, pure Bun
-- 🖥️ **`console: true`** - Frontend `console.log()` appears in backend terminal!
-- ⚛️ **React 19** - Latest React with hooks
-- 🎨 **TypeScript** - Full type safety
-- 📦 **Native Bun Bundler** - Fast builds with `Bun.build()`
-- 🔄 **Hot Reload** - File watching with automatic rebuilds
+### Core Health Tracking
+- **Hydration Tracking** - Log water intake with quick add buttons and custom amounts
+- **Sleep Tracking** - Record sleep hours and quality ratings
+- **Habit Tracking** - Create and monitor daily habits with completion tracking
+- **Nutrition Tracking** - Log meals with calorie tracking
 
-## 📦 Installation
+### AI Companion (Aurora)
+- **Voice-Enabled Chat** - Talk to Aurora using speech-to-text
+- **Intelligent Responses** - AI-powered recommendations using Google Gemini
+- **Action Execution** - Aurora can log data on your behalf ("I drank 500ml of water")
+- **Text-to-Speech** - Aurora speaks responses back to you
+- **Health Context Awareness** - Aurora knows your current stats and provides personalized advice
+
+### Progress & Motivation
+- **Streak Tracking** - Build and maintain daily/weekly streaks
+- **Achievement System** - Unlock achievements for milestones
+- **Progress Dashboard** - Visual charts and statistics
+- **Weekly Trends** - See your progress over time with charts
+
+### User Experience
+- **Beautiful Dark Theme** - Indigo and teal color scheme
+- **Smooth Animations** - Polished transitions and interactions
+- **Responsive Design** - Works on all mobile screen sizes
+- **Offline Support** - Data persists locally with Zustand + AsyncStorage
+
+## Tech Stack
+
+- **Framework**: React Native + Expo SDK 56
+- **Language**: TypeScript
+- **Routing**: Expo Router (file-based)
+- **Styling**: NativeWind (Tailwind CSS for React Native)
+- **State Management**: Zustand with AsyncStorage persistence
+- **Backend**: Supabase (Auth + PostgreSQL)
+- **AI**: Google Gemini 1.5 Flash
+- **Voice**: Expo Speech (Text-to-Speech)
+- **Charts**: react-native-chart-kit
+
+## Prerequisites
+
+- Node.js 18+ and npm/yarn
+- Expo CLI (`npm install -g expo-cli`)
+- iOS Simulator (Mac) or Android Studio (for emulators)
+- Expo Go app on your phone (for physical device testing)
+
+## Quick Start
+
+### 1. Clone and Install
 
 ```bash
-# Clone the repository
-git clone https://github.com/yueranyuan/bun-boilerplate.git
-cd bun-boilerplate
-
-# Install dependencies
-bun install
+git clone <your-repo-url>
+cd aurora-mobile-health-companion-1
+npm install
 ```
 
-## 🛠️ Usage
+### 2. Environment Setup
 
-### Development
+Create a `.env` file in the root directory:
 
 ```bash
-bun run dev
+cp .env.example .env
 ```
 
-This starts the Bun dev server at `http://localhost:3000` with:
-- Hot reload watching `src/` directory
-- Frontend console logs piped to terminal
-- Source maps for debugging
+Then fill in your credentials:
 
-### Production Build
+```env
+EXPO_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
+EXPO_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
+EXPO_PUBLIC_GOOGLE_AI_API_KEY=your-gemini-api-key
+```
+
+### 3. Set Up Supabase
+
+1. Create a Supabase project at https://supabase.com
+2. Run the SQL schema (see `docs/database-schema.sql`)
+3. Copy your project URL and anon key to `.env`
+
+### 4. Get Google AI API Key
+
+1. Visit https://makersuite.google.com/app/apikey
+2. Create a new API key
+3. Copy it to your `.env` file
+
+### 5. Run the App
 
 ```bash
-bun run build
-bun run start
+# Start the development server
+npm start
+
+# Or run directly on specific platform
+npm run ios     # iOS Simulator
+npm run android # Android Emulator
+npm run web     # Web browser
 ```
 
-### Deploy to Subscribe.dev
+Scan the QR code with Expo Go app on your phone to run on a physical device.
 
-Deploy your app to production with one command:
+## Project Structure
 
-```bash
-# Build first
-bun run build
-
-# Deploy (requires Subscribe.dev platform API key)
-SUBSCRIBE_DEV_PLATFORM_API_KEY=sdp_xxx bun run deploy
+```
+aurora-mobile-health-companion-1/
+├── app/                          # Expo Router pages
+│   ├── (auth)/                   # Authentication screens
+│   │   ├── login.tsx
+│   │   └── signup.tsx
+│   ├── (onboarding)/             # Onboarding flow
+│   │   ├── index.tsx             # Welcome carousel
+│   │   └── profile-setup.tsx
+│   ├── (tabs)/                   # Main app tabs
+│   │   ├── index.tsx             # Home Dashboard
+│   │   ├── track.tsx             # Tracking hub
+│   │   ├── companion.tsx         # AI Companion
+│   │   ├── progress.tsx          # Streaks & achievements
+│   │   └── profile.tsx
+│   ├── hydration.tsx             # Hydration tracking
+│   ├── sleep.tsx                 # Sleep tracking
+│   ├── habits.tsx                # Habit tracking
+│   ├── nutrition.tsx             # Nutrition tracking
+│   └── _layout.tsx               # Root layout
+├── components/                   # Reusable components (future)
+├── lib/
+│   ├── supabase.ts               # Supabase client & helpers
+│   ├── gemini.ts                 # Google AI client
+│   └── constants.ts              # App constants
+├── store/
+│   └── useStore.ts               # Zustand state management
+├── types/
+│   └── index.ts                  # TypeScript type definitions
+├── utils/
+│   └── health-calculations.ts    # Health-related utilities
+├── assets/                       # Images, fonts
+├── .env.example                  # Environment template
+├── tailwind.config.js            # Tailwind configuration
+├── metro.config.js               # Metro bundler config
+├── app.json                      # Expo configuration
+└── package.json
 ```
 
-Get your platform API key from [Subscribe.dev Dashboard](https://subscribe.dev)
+## Key Features Implementation
 
-**What happens:**
-1. Creates a ZIP bundle from your `public/` folder
-2. Uploads to Subscribe.dev via S3
-3. Deploys with deterministic project-based URL
-4. Returns your live URL (e.g., `https://abc123.apps.subscribe.dev`)
+### AI Companion with Voice
 
-The deployment script (`deploy.ts`) uses the same robust S3 upload flow that the Subscribe.dev dashboard uses, ensuring proper file extraction and serving.
+The AI Companion is powered by Google Gemini and can:
 
-## 🎯 The `console: true` Feature
+1. **Understand Natural Language**
+   - "I drank 500ml of water"
+   - "Log 8 hours of sleep"
+   - "Create a meditation habit"
+   - "How am I doing today?"
 
-The killer feature of Bun 1.3.1 is `development: { console: true }` in `Bun.serve()`.
+2. **Execute Actions**
+   - Parses user intent from natural language
+   - Logs data directly to the app
+   - Provides feedback and encouragement
 
-**What it does:**
-- All `console.log()`, `console.error()`, etc. from your **frontend React code**
-- Automatically appear in your **backend terminal**
-- Perfect for debugging without opening browser DevTools
+3. **Voice Interaction**
+   - Text-to-Speech for AI responses
+   - Visual pulse animation when speaking
+   - Quick action buttons for common commands
 
-**Example:**
+### Health Context System
+
+Aurora AI has full context of your health data:
+- Current hydration vs. goal
+- Last night's sleep and quality
+- Active habits and completion status
+- Today's meals and calories
+- Current streaks and achievements
+
+This allows for personalized, context-aware responses.
+
+### State Management
+
+Uses Zustand for global state with AsyncStorage persistence:
+- User profile and auth state
+- Health data (hydration, sleep, habits, nutrition)
+- Streaks and achievements
+- AI chat history
+- All data persists across app restarts
+
+## Database Schema
+
+The app uses Supabase PostgreSQL. See `docs/database-schema.sql` for the complete schema.
+
+Main tables:
+- `profiles` - User profile data
+- `hydration_logs` - Water intake records
+- `sleep_logs` - Sleep tracking
+- `habits` - User-created habits
+- `habit_logs` - Habit completion records
+- `meals` - Nutrition logs
+- `streaks` - Streak tracking
+- `achievements` - Unlocked achievements
+
+## Customization
+
+### Colors
+
+Edit `tailwind.config.js` to customize the color scheme:
+
+```js
+colors: {
+  primary: { ... },  // Indigo shades
+  accent: { ... },   // Teal shades
+  dark: { ... },     // Dark theme colors
+}
+```
+
+### AI Prompt
+
+Customize Aurora's personality in `lib/gemini.ts`:
+
 ```typescript
-// In your React component
-console.log('Button clicked!', someData)
+const getSystemPrompt = (context: HealthContext) => `
+  You are Aurora, a friendly and supportive AI health companion...
+`
 ```
 
-**You'll see in terminal:**
-```
-[Frontend] Button clicked! { count: 5 }
-```
+### Goals
 
-## 📁 Project Structure
+Default health goals are in `lib/constants.ts`:
 
-```
-bun-boilerplate/
-├── src/
-│   ├── App.tsx          # Main React component
-│   └── index.tsx        # React entry point
-├── public/
-│   ├── index.html       # HTML template
-│   └── bundle.js        # Built bundle (generated)
-├── server.ts            # Bun dev server with console: true
-├── package.json
-└── tsconfig.json
+```typescript
+export const DEFAULT_HYDRATION_GOAL = 2000; // ml
+export const DEFAULT_SLEEP_GOAL = 8; // hours
+export const DEFAULT_CALORIE_GOAL = 2000; // kcal
 ```
 
-## 🔧 How It Works
+## Deployment
 
-1. **`server.ts`** - Bun server with `Bun.serve()` and `development: { console: true }`
-2. **`Bun.build()`** - Native bundler compiles React/TypeScript to `public/bundle.js`
-3. **File watcher** - Watches `src/` and rebuilds on changes
-4. **Console proxying** - Frontend logs forwarded to backend terminal
+### Expo EAS Build
 
-## 🆚 Why Not Vite?
+```bash
+# Install EAS CLI
+npm install -g eas-cli
 
-**Vite** is great, but it's not a "Bun boilerplate" - it's a Node.js tool that happens to work with Bun as a package manager.
+# Configure your project
+eas build:configure
 
-**This boilerplate** uses:
-- ✅ Bun's native dev server
-- ✅ Bun's native bundler
-- ✅ Bun-specific features like `console: true`
-- ✅ Pure Bun runtime (no Node.js dependencies)
+# Build for iOS
+eas build --platform ios
 
-## 📚 Learn More
+# Build for Android
+eas build --platform android
+```
 
-- [Bun Documentation](https://bun.sh/docs)
-- [Bun.serve() API](https://bun.sh/docs/api/http)
-- [Bun.build() API](https://bun.sh/docs/bundler)
-- [React Documentation](https://react.dev)
+### Environment Variables in EAS
 
-## 📝 License
+Add your secrets to EAS:
 
-MIT
+```bash
+eas secret:create --name EXPO_PUBLIC_SUPABASE_URL --value "your-url"
+eas secret:create --name EXPO_PUBLIC_SUPABASE_ANON_KEY --value "your-key"
+eas secret:create --name EXPO_PUBLIC_GOOGLE_AI_API_KEY --value "your-key"
+```
 
-## 🤝 Contributing
+## Troubleshooting
 
-Contributions welcome! This is meant to be a minimal, clean starting point for Bun + React projects.
+### Metro Bundler Issues
+
+```bash
+# Clear cache and restart
+npx expo start -c
+```
+
+### NativeWind Not Working
+
+Ensure `global.css` is imported in `app/_layout.tsx`:
+
+```typescript
+import '../global.css';
+```
+
+### Supabase Connection Issues
+
+- Check your `.env` file has the correct URL and key
+- Ensure you're using `EXPO_PUBLIC_` prefix
+- Restart the Expo dev server after changing `.env`
+
+### AI Companion Not Responding
+
+- Verify your Google AI API key is valid
+- Check network connection
+- Look for errors in console logs
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+## License
+
+MIT License - see LICENSE file for details
+
+## Acknowledgments
+
+- Expo team for the amazing framework
+- Supabase for the backend infrastructure
+- Google for Gemini AI API
+- NativeWind for Tailwind CSS support
+
+## Support
+
+For issues, questions, or contributions, please open an issue on GitHub.
+
+---
+
+Built with ❤️ using Expo, React Native, and AI
