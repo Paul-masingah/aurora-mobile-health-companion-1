@@ -1,11 +1,11 @@
 import { useEffect } from 'react';
 import { View, Text, ActivityIndicator } from 'react-native';
 import { router } from 'expo-router';
-import { useStore } from '../store/useStore';
+import { useAppStore } from '../store/useAppStore';
 import { getCurrentUser } from '../lib/supabase';
 
 export default function Index() {
-  const { user, hasCompletedOnboarding, setUser } = useStore();
+  const { user, hasCompletedOnboarding, setUser } = useAppStore();
 
   useEffect(() => {
     checkAuthStatus();
