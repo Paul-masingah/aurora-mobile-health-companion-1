@@ -3,10 +3,10 @@ import { router } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 const trackingOptions = [
-  { title: 'Hydration', icon: '💧', route: '/hydration', color: 'bg-accent-600' },
-  { title: 'Sleep', icon: '😴', route: '/sleep', color: 'bg-primary-600' },
-  { title: 'Habits', icon: '✅', route: '/habits', color: 'bg-green-600' },
-  { title: 'Nutrition', icon: '🍎', route: '/nutrition', color: 'bg-orange-600' },
+  { title: 'Hydration', icon: '💧', route: '/track/hydration', color: 'bg-accent-600' },
+  { title: 'Sleep', icon: '😴', route: '/track/sleep', color: 'bg-primary-600' },
+  { title: 'Habits', icon: '✅', route: '/track/habits', color: 'bg-green-600' },
+  { title: 'Nutrition', icon: '🍎', route: '/track/nutrition', color: 'bg-orange-600' },
 ];
 
 export default function TrackScreen() {

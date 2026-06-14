@@ -12,7 +12,7 @@ import {
 import { router } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { signUp } from '../../lib/supabase';
-import { useStore } from '../../store/useStore';
+import { useAppStore } from '../../store/useAppStore';
 
 export default function SignUpScreen() {
   const [fullName, setFullName] = useState('');
@@ -20,7 +20,7 @@ export default function SignUpScreen() {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [loading, setLoading] = useState(false);
-  const { setUser } = useStore();
+  const { setUser } = useAppStore();
 
   const handleSignUp = async () => {
     // Validation
@@ -139,7 +139,7 @@ export default function SignUpScreen() {
             <TouchableOpacity
               onPress={handleSignUp}
               disabled={loading}
-              className={`bg-accent-500 rounded-xl py-4 items-center mb-4 ${
+              className={`bg-accent-500 rounded-xl py-4 items-center mb-6 ${
                 loading ? 'opacity-50' : ''
               }`}
             >
@@ -147,6 +147,21 @@ export default function SignUpScreen() {
                 {loading ? 'Creating Account...' : 'Sign Up'}
               </Text>
             </TouchableOpacity>
+
+            <View className="flex-row items-center mb-6">
+              <View className="flex-1 h-[1px] bg-dark-700" />
+              <Text className="text-dark-500 px-4 text-xs font-bold">OR SIGN UP WITH</Text>
+              <View className="flex-1 h-[1px] bg-dark-700" />
+            </View>
+
+            <View className="flex-row gap-4 mb-8">
+              <TouchableOpacity className="flex-1 bg-dark-800 py-4 rounded-xl items-center border border-dark-700">
+                <Text className="text-white font-bold">Google</Text>
+              </TouchableOpacity>
+              <TouchableOpacity className="flex-1 bg-dark-800 py-4 rounded-xl items-center border border-dark-700">
+                <Text className="text-white font-bold">Apple</Text>
+              </TouchableOpacity>
+            </View>
 
             {/* Login Link */}
             <View className="flex-row justify-center items-center mt-4">

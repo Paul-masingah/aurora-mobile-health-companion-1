@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react';
-import { View, Text, ScrollView, Dimensions, TouchableOpacity, Image } from 'react-native';
+import { View, Text, ScrollView, Dimensions, TouchableOpacity, Animated } from 'react-native';
 import { router } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -7,24 +7,34 @@ const { width } = Dimensions.get('window');
 
 const onboardingData = [
   {
-    title: 'Welcome to Aurora',
-    description: 'Your personal AI health companion to help you build better habits and reach your wellness goals.',
+    title: 'Meet your personal health companion.',
+    description: 'Aurora is here to guide you on your journey to better health and wellness.',
     icon: '🌟',
+    hero: '✨',
   },
   {
-    title: 'Track Your Health',
-    description: 'Monitor hydration, sleep, nutrition, and daily habits all in one place.',
+    title: 'Track hydration, sleep, habits, and nutrition.',
+    description: 'Easily log your daily activities and see your progress in real-time.',
     icon: '💧',
+    hero: '📊',
   },
   {
-    title: 'AI-Powered Insights',
-    description: 'Get personalized recommendations and voice-guided support from Aurora.',
+    title: 'Receive personalized daily insights.',
+    description: 'Aurora uses AI to provide tailored advice based on your health data.',
     icon: '🤖',
+    hero: '💡',
   },
   {
-    title: 'Build Streaks',
-    description: 'Stay motivated with streaks and achievements as you progress toward your goals.',
+    title: 'Build healthier routines through consistency.',
+    description: 'Stay motivated with streaks and achievements as you reach your milestones.',
     icon: '🔥',
+    hero: '🏆',
+  },
+  {
+    title: 'Learn more about yourself every day.',
+    description: 'Discover patterns and insights that help you make better health choices.',
+    icon: '🧠',
+    hero: '🌈',
   },
 ];
 
@@ -35,11 +45,15 @@ export default function OnboardingScreen() {
   const handleNext = () => {
     if (currentIndex < onboardingData.length - 1) {
       const nextIndex = currentIndex + 1;
-      setCurrentIndex(nextIndex);
-      scrollViewRef.current?.scrollTo({ x: width * nextIndex, animated: true });
+      scrollToIndex(nextIndex);
     } else {
       router.push('/(auth)/signup');
     }
+  };
+
+  const scrollToIndex = (index: number) => {
+    setCurrentIndex(index);
+    scrollViewRef.current?.scrollTo({ x: width * index, animated: true });
   };
 
   const handleSkip = () => {
@@ -49,7 +63,9 @@ export default function OnboardingScreen() {
   const handleScroll = (event: any) => {
     const offsetX = event.nativeEvent.contentOffset.x;
     const index = Math.round(offsetX / width);
-    setCurrentIndex(index);
+    if (index !== currentIndex) {
+      setCurrentIndex(index);
+    }
   };
 
   return (
@@ -70,6 +86,7 @@ export default function OnboardingScreen() {
           showsHorizontalScrollIndicator={false}
           onScroll={handleScroll}
           scrollEventThrottle={16}
+          className="flex-1"
         >
           {onboardingData.map((item, index) => (
             <View
@@ -77,11 +94,17 @@ export default function OnboardingScreen() {
               style={{ width }}
               className="flex-1 items-center justify-center px-8"
             >
-              <Text className="text-8xl mb-8">{item.icon}</Text>
-              <Text className="text-3xl font-bold text-white text-center mb-4">
+              <View className="mb-12 items-center justify-center">
+                <Text className="text-9xl">{item.hero}</Text>
+                <View className="absolute -bottom-4 -right-4 bg-dark-800 rounded-full p-4 border-2 border-accent-500">
+                   <Text className="text-4xl">{item.icon}</Text>
+                </View>
+              </View>
+
+              <Text className="text-3xl font-bold text-white text-center mb-4 px-4">
                 {item.title}
               </Text>
-              <Text className="text-lg text-dark-300 text-center leading-6">
+              <Text className="text-lg text-dark-300 text-center leading-6 px-4">
                 {item.description}
               </Text>
             </View>
@@ -91,8 +114,9 @@ export default function OnboardingScreen() {
         {/* Pagination dots */}
         <View className="flex-row justify-center items-center py-6">
           {onboardingData.map((_, index) => (
-            <View
+            <TouchableOpacity
               key={index}
+              onPress={() => scrollToIndex(index)}
               className={`h-2 rounded-full mx-1 ${
                 index === currentIndex ? 'w-8 bg-accent-400' : 'w-2 bg-dark-600'
               }`}
@@ -104,7 +128,7 @@ export default function OnboardingScreen() {
         <View className="px-8 pb-8">
           <TouchableOpacity
             onPress={handleNext}
-            className="bg-accent-500 rounded-2xl py-4 items-center"
+            className="bg-accent-500 rounded-2xl py-4 items-center shadow-lg shadow-accent-900"
           >
             <Text className="text-white text-lg font-bold">
               {currentIndex === onboardingData.length - 1 ? 'Get Started' : 'Next'}

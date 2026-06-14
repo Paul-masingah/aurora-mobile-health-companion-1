@@ -12,13 +12,13 @@ import {
 import { router } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { signIn } from '../../lib/supabase';
-import { useStore } from '../../store/useStore';
+import { useAppStore } from '../../store/useAppStore';
 
 export default function LoginScreen() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
-  const { setUser, hasCompletedOnboarding } = useStore();
+  const { setUser, hasCompletedOnboarding } = useAppStore();
 
   const handleLogin = async () => {
     if (!email.trim() || !password.trim()) {
@@ -100,7 +100,7 @@ export default function LoginScreen() {
             <TouchableOpacity
               onPress={handleLogin}
               disabled={loading}
-              className={`bg-accent-500 rounded-xl py-4 items-center mb-4 ${
+              className={`bg-accent-500 rounded-xl py-4 items-center mb-6 ${
                 loading ? 'opacity-50' : ''
               }`}
             >
@@ -108,6 +108,21 @@ export default function LoginScreen() {
                 {loading ? 'Logging in...' : 'Log In'}
               </Text>
             </TouchableOpacity>
+
+            <View className="flex-row items-center mb-6">
+              <View className="flex-1 h-[1px] bg-dark-700" />
+              <Text className="text-dark-500 px-4 text-xs font-bold">OR CONTINUE WITH</Text>
+              <View className="flex-1 h-[1px] bg-dark-700" />
+            </View>
+
+            <View className="flex-row gap-4 mb-8">
+              <TouchableOpacity className="flex-1 bg-dark-800 py-4 rounded-xl items-center border border-dark-700">
+                <Text className="text-white font-bold">Google</Text>
+              </TouchableOpacity>
+              <TouchableOpacity className="flex-1 bg-dark-800 py-4 rounded-xl items-center border border-dark-700">
+                <Text className="text-white font-bold">Apple</Text>
+              </TouchableOpacity>
+            </View>
 
             {/* Sign Up Link */}
             <View className="flex-row justify-center items-center mt-4">
